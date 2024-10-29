@@ -1,0 +1,11 @@
+app:
+  host: "127.0.0.1"
+  port: 13587
+  debug: true
+  model_type: "chatglm-6b"
+
+logging:
+  log_dir: "logs"
+  log_file: "app.log"
+  log_level: "DEBUG"
+  log_format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

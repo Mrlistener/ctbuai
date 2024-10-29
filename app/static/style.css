@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 自定义选择框样式 */
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.custom-select select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.custom-select:after {
+    content: '\25BC'; /* 下拉箭头 */
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #333;
+    pointer-events: none;
+}
+
+.custom-select select:hover {
+    border-color: #999;
+}
+
+/* 聊天框样式 */
+.chat-box {
+    max-height: 400px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 用户消息样式 */
+.chat-box .user-message {
+    display: inline-block;
+    background-color: #e0e0e0; /* 灰色背景 */
+    text-align: right;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 70%; /* 限制消息框的最大宽度 */
+    margin-left: auto;
+    color: #333;
+    float: right;
+    clear: both;
+    word-wrap: break-word;
+}
+
+/* 机器人消息样式 */
+.chat-box .bot-message {
+    display: inline-block;
+    text-align: left;
+    max-width: 70%; /* 限制消息框的最大宽度 */
+    margin-right: auto;
+    float: left;
+    clear: both;
+    word-wrap: break-word;
+    color: #333;
+    padding: 5px 0; /* 添加轻微内边距 */
+}
+
+/* 输入框和按钮的样式 */
+.input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 25px;
+    padding: 10px;
+    border: none;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    flex-grow: 1;
+    outline: none;
+    border-radius: 25px;
+    background-color: #f9f9f9;
+    padding-right: 40px;
+}
+
+button {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button img {
+    width: 24px;
+    height: 24px;
+}
+
+button:hover img {
+    filter: brightness(0.8);
+}
