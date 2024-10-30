@@ -9,33 +9,33 @@
 </head>
 <body>
 <div class="container">
-    <h1>重庆工商大学人工智能平台</h1>
+    <!-- 左侧部分 -->
+    <div class="left-side">
+        <h1>重庆工商大学人工智能平台</h1>
+    </div>
 
-    <!-- 模型选择下拉菜单 -->
-    <div class="custom-select-wrapper">
-        <div class="custom-select">
-            <select id="model-selector">
-                <option value="chatglm-6b" selected>小U</option>
-                <option value="gpt2">GPT-2</option>
-                <option value="cpm_generate">CPM Generate</option>
-            </select>
+    <!-- 中间部分 -->
+    <div class="center">
+        <div class="chat-box" id="chat-output"></div>
+        <div class="input-box">
+            <input type="text" id="user-input" placeholder="给小U发消息">
+            <button onclick="sendMessage()" id="send-button">
+                <img src="{{ url_for('static', filename='send.svg') }}" alt="Send">
+            </button>
         </div>
     </div>
 
-    <!-- 聊天框 -->
-    <div class="chat-box">
-        <div id="chat-output"></div>
-    </div>
-
-    <!-- 输入框和发送按钮 -->
-    <div class="input-box">
-        <input type="text" id="user-input" placeholder="给小U发消息">
-        <button onclick="sendMessage()">
-            <img src="{{ url_for('static', filename='send.svg') }}" alt="Send">
-        </button>
+    <!-- 右侧部分 -->
+    <div class="right-side">
+        <div class="custom-select-wrapper">
+            <select id="model-selector">
+                <option value="chatglm-6b" selected>ChatGLM-6B</option>
+<!--                <option value="gpt2">GPT-2</option>-->
+<!--                <option value="cpm_generate">CPM Generate</option>-->
+            </select>
+        </div>
     </div>
 </div>
-
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

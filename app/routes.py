@@ -29,6 +29,7 @@ def chat():
     try:
         bot_response = generate_response(user_input, model_type)  # 调用响应
         bot_response = bot_response.replace("ChatGLM-6B", "小U")
+        bot_response = bot_response.replace(" ", "")
         length = len(user_input)
         bot_response = bot_response[length:]
         logger.info(f"Generated bot response: {bot_response}")  # 记录模型响应日志

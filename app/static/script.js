@@ -1,29 +1,52 @@
-// 监听回车键的事件，触发 sendMessage
-document.getElementById("user-input").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();  // 防止默认的回车行为（如换行）
-        sendMessage();  // 调用 sendMessage 函数发送消息
-    }
-});
+let isWaitingForResponse = false;
 
 async function sendMessage() {
-    const userInput = document.getElementById("user-input").value;
-    const modelType = document.getElementById("model-selector").value;
-    if (!userInput) return;
+    if (isWaitingForResponse) return;
 
+    const userInput = document.getElementById("user-input");
     const chatOutput = document.getElementById("chat-output");
-    chatOutput.innerHTML += `<p class="user-message">${userInput}</p>`;
-    document.getElementById("user-input").value = '';  // 清空输入框
+    const modelSelector = document.getElementById("model-selector");
+
+    const message = userInput.value.trim();
+    const modelType = modelSelector.value;
+
+    if (!message) return;
+
+    isWaitingForResponse = true;
+    document.getElementById("send-button").disabled = true;
+
+    const userMessage = document.createElement("div");
+    userMessage.className = "user-message";
+    userMessage.innerHTML = `<p>${message}</p>`;
+    chatOutput.appendChild(userMessage);
+    userInput.value = "";
 
     try {
-        const response = await axios.post('/api/generate', {
-            message: userInput,
+        const response = await axios.post("/api/generate", {
+            message: message,
             model_type: modelType
         });
-        const botResponse = response.data.response;
-        chatOutput.innerHTML += `<p class="bot-message">${botResponse}</p>`;
-        chatOutput.scrollTop = chatOutput.scrollHeight;  // 自动滚动到底部
+
+        const botMessage = document.createElement("div");
+        botMessage.className = "bot-message";
+        botMessage.innerHTML = `<p>${response.data.response}</p>`;
+        chatOutput.appendChild(botMessage);
     } catch (error) {
-        console.error("Error generating response:", error);
+        console.error("Error sending message:", error);
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "bot-message";
+        errorMessage.innerHTML = `<p>无法生成响应，请稍后再试。</p>`;
+        chatOutput.appendChild(errorMessage);
+    } finally {
+        isWaitingForResponse = false;
+        document.getElementById("send-button").disabled = false;
     }
+
+    chatOutput.scrollTop = chatOutput.scrollHeight;
 }
+
+document.getElementById("user-input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
