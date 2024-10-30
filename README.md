@@ -33,7 +33,7 @@ CTBU-AI/
 
 ## 环境设置
 
-本项目依赖多个 Python 包和库，为确保一致的开发环境，建议使用 `conda` 管理所有依赖项。请按照以下步骤设置开发环境。
+本项目依赖多个 Python 包和库，为确保一致的开发环境，建议使用 `conda` 管理所有依赖项。请按照以下步骤设置开发环境。请根据需要选择适合你的环境文件。
 
 ### 1. 安装 Miniconda 或 Anaconda
 
@@ -53,7 +53,7 @@ conda env create -f environment.yml  # 重新创建环境
 创建环境之后，使用以下命令激活环境：
 
 ```bash
-conda activate CTBU--AI
+conda activate CTBU-AI
 ```
 
 `myenv` 是在 `environment.yml` 文件中定义的环境名称，激活后即可在该环境中运行项目。
