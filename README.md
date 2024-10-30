@@ -44,7 +44,7 @@ CTBU-AI/
 在项目根目录下使用以下命令来创建并配置环境：
 
 ```bash
-conda remove --name CTBU-AI --all  # 删除现有环境
+conda remove --name CTBU--AI --all  # 删除现有环境
 conda env create -f environment.yml  # 重新创建环境
 ```
 
@@ -53,7 +53,7 @@ conda env create -f environment.yml  # 重新创建环境
 创建环境之后，使用以下命令激活环境：
 
 ```bash
-conda activate CTBU-AI
+conda activate CTBU--AI
 ```
 
 `myenv` 是在 `environment.yml` 文件中定义的环境名称，激活后即可在该环境中运行项目。
