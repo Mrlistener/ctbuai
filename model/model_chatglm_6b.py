@@ -15,12 +15,7 @@ logger = logging.getLogger(__name__)
 model_chatglm_6b = None
 tokenizer_chatglm_6b = None
 
-
 # 加载 chatglm_6b
-# 模型路径：resource/chatglm_6b
-# 模型大小：12.4GB
-# 模型介绍：清华大学开源中文语料训练，支持中文输入，支持多轮对话。
-# 模型来源：https://huggingface.co/THUDM/chatglm-6b
 def load_chatglm_6b_model():
     global model_chatglm_6b, tokenizer_chatglm_6b
     if model_chatglm_6b is None or tokenizer_chatglm_6b is None:
@@ -30,37 +25,36 @@ def load_chatglm_6b_model():
         model_path = os.path.join(project_root, "resource", "chatglm-6b")
         absolute_model_path = os.path.abspath(model_path)
         logger.info(f"chatglm-6b Model path: {absolute_model_path}")
+
         # 加载 ChatGLM-6B 模型和分词器，记录时间和进度条
         try:
             start_time = time.time()
-            logger.info("Loading ChatGLM-6B model_chatglm_6b and tokenizer_chatglm_6b...")
+            logger.info("Loading ChatGLM-6B model and tokenizer...")
+
             # 使用进度条显示加载进度
             with tqdm(total=100, desc="Loading Tokenizer and Model",
                       bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt}") as pbar:
+                # 加载分词器
+                tokenizer_chatglm_6b = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True,
+                                                                     revision="main")
+                pbar.update(50)  # 更新进度条到一半
+
+                # 加载模型，基于是否有 GPU 可用
+                model_loading_args = {"trust_remote_code": True, "revision": "main"}
                 if torch.cuda.is_available():
-                    tokenizer_chatglm_6b = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True,
-                                                                         revision="main")
-                    pbar.update(50)  # 更新进度条一半，因为分词器加载完成
-                    # 使用GPU
-                    model_chatglm_6b = AutoModel.from_pretrained(model_path, trust_remote_code=True,
-                                                                 revision="main").cuda()
-                    pbar.update(50)  # 模型加载完成
+                    model_chatglm_6b = AutoModel.from_pretrained(model_path, **model_loading_args).cuda()
                 else:
-                    tokenizer_chatglm_6b = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True,
-                                                                         revision="main")
-                    pbar.update(50)  # 更新进度条一半，因为分词器加载完成
-                    # 使用CPU
-                    model_chatglm_6b = AutoModel.from_pretrained(model_path, trust_remote_code=True,
-                                                                 revision="main").float()
-                    pbar.update(50)  # 模型加载完成
+                    model_chatglm_6b = AutoModel.from_pretrained(model_path, **model_loading_args).float()
+                pbar.update(50)  # 更新进度条到完成
             end_time = time.time()
-            logger.info(
-                f"Model_chatglm_6b and tokenizer_chatglm_6b loaded successfully in {end_time - start_time:.2f} seconds.")
+            logger.info(f"Model and tokenizer loaded successfully in {end_time - start_time:.2f} seconds.")
+        except AttributeError as e:
+            logger.error("Tokenizer attribute error. Check 'sp_tokenizer' attribute compatibility.")
+            raise AttributeError("Check compatibility of 'sp_tokenizer' attribute in tokenizer.")
         except Exception as e:
             logger.error(f"Error loading model: {str(e)}")
             raise e  # 确保错误抛出，应用停止
         return "success"
-
 
 # 对话生成函数
 def generate_response_chatglm_6b(user_input):
@@ -68,12 +62,16 @@ def generate_response_chatglm_6b(user_input):
     try:
         logger.info(f"Received user input: {user_input}")
 
-        # 将输入转化为模型所需的格式
-        inputs = tokenizer_chatglm_6b(user_input, return_tensors="pt")
+        # 将输入转化为模型所需的格式，确保添加 attention_mask
+        inputs = tokenizer_chatglm_6b(user_input, return_tensors="pt", padding=True)
+        if "attention_mask" not in inputs:
+            inputs["attention_mask"] = torch.ones(inputs["input_ids"].shape, dtype=torch.bool)
+
+        inputs["attention_mask"] = inputs["attention_mask"].bool()  # 将 attention_mask 转为 bool 类型
         logger.debug(f"Tokenized input: {inputs}")
 
         # 使用模型生成对话响应
-        outputs = model_chatglm_6b.generate(**inputs, max_length=2024, do_sample=True, top_p=0.7, temperature=0.5)
+        outputs = model_chatglm_6b.generate(**inputs, max_length=512, do_sample=True, top_p=0.7, temperature=0.5)
         logger.debug(f"Model output: {outputs}")
 
         # 解码生成的结果
