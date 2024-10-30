@@ -27,7 +27,7 @@ CTBU-AI/
 ├── logs/                      # 日志文件存储目录
 │   └── app.log                # 日志文件
 ├── environment.yml            # Conda 环境配置文件
-├── run.py                     # 启动 Flask 应用的入口文件
+├── main.py                     # 启动 Flask 应用的入口文件
 └── README.md                  # 项目说明文档
 ```
 
