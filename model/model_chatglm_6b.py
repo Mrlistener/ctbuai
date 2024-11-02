@@ -1,6 +1,7 @@
 import logging
 import os
 from transformers import AutoTokenizer, AutoModel
+import numpy as np
 from tqdm import tqdm
 import time
 import torch
@@ -64,10 +65,14 @@ def generate_response_chatglm_6b(user_input):
 
         # 将输入转化为模型所需的格式，确保添加 attention_mask
         inputs = tokenizer_chatglm_6b(user_input, return_tensors="pt", padding=True)
+
+        # 确保 attention_mask 存在并优化为单一 tensor 格式
         if "attention_mask" not in inputs:
             inputs["attention_mask"] = torch.ones(inputs["input_ids"].shape, dtype=torch.bool)
 
-        inputs["attention_mask"] = inputs["attention_mask"].bool()  # 将 attention_mask 转为 bool 类型
+        # 转换 attention_mask 为布尔类型
+        inputs["attention_mask"] = inputs["attention_mask"].to(torch.bool)
+
         logger.debug(f"Tokenized input: {inputs}")
 
         # 使用模型生成对话响应
