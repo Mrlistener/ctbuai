@@ -92,20 +92,19 @@ body, html {
 /* 聊天框 */
 .chat-box {
     width: 100%;
-    flex-grow: 1;
+    max-height: calc(100vh - 140px); /* Adjusted to leave space for input box and padding */
     padding: 10px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding-bottom: 80px; /* 留出输入框的空间 */
 }
 
 /* 输入框 */
 .input-box {
-    position: fixed; /* 固定在页面底部 */
-    bottom: 20px; /* 与页面底部保持 20px 的间距 */
-    left: 25%; /* 与左侧区域对齐 */
-    width: 50%; /* 占中间部分的宽度 */
+    position: fixed;
+    bottom: 20px;
+    left: 25%;
+    width: 50%;
     display: flex;
     align-items: center;
     padding: 10px;
