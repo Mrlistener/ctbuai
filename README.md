@@ -16,18 +16,24 @@ CTBU-AI/
 ├── app/
 │   ├── __init__.py            # Flask 应用的初始化
 │   ├── routes.py              # 定义路由和视图函数
+│   ├── exceptions.py          # 定义全局异常类
+│   ├── static/                # 静态资源文件
+│   ├── templates/             # 模板文件
 ├── model/
 │   ├── __init__.py            # 模型模块初始化
 │   ├── model.py               # 模型入口
 │   ├── model_chatglm_6b.py    # chatglm_6b    模型加载与回复生成
 │   ├── model_cpm_generate.py  # cpm_generate  模型加载与回复生成
 │   ├── model_gpt_2_chinese.py # gpt_2_chinese 模型加载与回复生成
-├── templates/
-│   ├── index.html             # Flask 应用的前端页面模板
+│   ├── resource/              # 预训练模型
 ├── logs/                      # 日志文件存储目录
 │   └── app.log                # 日志文件
 ├── environment.yml            # Conda 环境配置文件
-├── main.py                     # 启动 Flask 应用的入口文件
+├── config.yml                 # 配置文件
+├── requirements.tetx          # PIP 环境配置文件
+├── main.py                    # 应用的入口文件
+├── AppConfig.py               # 配置文件获取类
+├── logging_config.py          # 日志配置类
 └── README.md                  # 项目说明文档
 ```
 
