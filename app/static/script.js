@@ -6,6 +6,12 @@ async function sendMessage() {
     const userInput = document.getElementById("user-input");
     const chatOutput = document.getElementById("chat-output");
     const modelSelector = document.getElementById("model-selector");
+    const sendButton = document.getElementById("send-button");
+
+    if (!userInput || !chatOutput || !modelSelector || !sendButton) {
+        console.error("One or more elements are missing. Check HTML structure.");
+        return;
+    }
 
     const message = userInput.value.trim();
     const modelType = modelSelector.value;
@@ -13,7 +19,7 @@ async function sendMessage() {
     if (!message) return;
 
     isWaitingForResponse = true;
-    document.getElementById("send-button").disabled = true;
+    sendButton.disabled = true;
 
     const userMessage = document.createElement("div");
     userMessage.className = "user-message";
@@ -29,7 +35,7 @@ async function sendMessage() {
 
         const botMessage = document.createElement("div");
         botMessage.className = "bot-message";
-        botMessage.innerHTML = `<p>${response.data.response}</p>`;
+        botMessage.innerHTML = `<p>${response.data.response || "No response received."}</p>`;
         chatOutput.appendChild(botMessage);
     } catch (error) {
         console.error("Error sending message:", error);
@@ -39,7 +45,7 @@ async function sendMessage() {
         chatOutput.appendChild(errorMessage);
     } finally {
         isWaitingForResponse = false;
-        document.getElementById("send-button").disabled = false;
+        sendButton.disabled = false;
     }
 
     chatOutput.scrollTop = chatOutput.scrollHeight;
